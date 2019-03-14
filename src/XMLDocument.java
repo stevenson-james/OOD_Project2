@@ -35,9 +35,10 @@ public class XMLDocument {
     }
 
     public String getFile(){
-        String file = "Shakespeare/hamlet.xml";
         System.out.println("Enter file name (ex: Shakespeare/hamlet.xml): ");
-        file = input.nextLine();
+        String file = input.nextLine();
+        if (file.equals(""))
+            file = "Shakespeare/hamlet.xml";
         return file;
     }
 
@@ -49,10 +50,10 @@ public class XMLDocument {
 
     public void findNumberOfSpeaker(){
         System.out.println("Insert speaker name to find number of times they speak:");
-        String checkedName = "HAMLET";
-        checkedName = input.nextLine();
+        String checkedName = input.nextLine();
         checkedName = checkedName.toUpperCase();
-        int count = 0;
+        if (checkedName.equals(""))
+            checkedName = "HAMLET";        int count = 0;
         NodeList speakerList = root.getElementsByTagName("SPEAKER");
         Element speakerElement;
         for (int i = 0; i < speakerList.getLength(); i++)
@@ -67,8 +68,9 @@ public class XMLDocument {
 
     public Node[] findLine(){
         System.out.println("Insert fragment to be found:");
-        String fragment = "To be, or not to be";
-        fragment = input.nextLine();
+        String fragment = input.nextLine();
+        if (fragment.equals(""))
+            fragment = "To be, or not to be";
         int numberOfSentences = 0;
         boolean isFound = false;
         NodeList lineList = root.getElementsByTagName("LINE");
