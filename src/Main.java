@@ -26,15 +26,16 @@ public class Main {
             System.out.println ("There are " + numPersona + " persona");
 
             //Find number of times a character speaks
+            System.out.println("Insert speaker name to find number of times they speak:");
             String checkedName = "HAMLET";
+            checkedName = input.nextLine();
+            checkedName = checkedName.toUpperCase();
             int count = 0;
             NodeList speakerList = root.getElementsByTagName("SPEAKER");
             Element speakerElement;
-            Node speakerNode;
             for (int i = 0; i < speakerList.getLength(); i++)
             {
-                speakerNode = speakerList.item(i);
-                speakerElement = (Element) speakerNode;
+                speakerElement = (Element) speakerList.item(i);
 
                 if (checkedName.equals(speakerElement.getTextContent()))
                     count++;
@@ -42,22 +43,23 @@ public class Main {
             System.out.println (checkedName + " speaks " + count + " times ");
 
             //Find line of text from user input
-            //default of "To be, or not to be"?
-            String fragment = input.nextLine();
+            System.out.println("Insert fragment to be found:");
+            String fragment = "To be, or not to be";
+            fragment = input.nextLine();
+            int numberOfSentences = 0;
             boolean isFound = false;
             NodeList lineList = root.getElementsByTagName("LINE");
             Element lineElement;
-            Node lineNode;
+            Node[] lineNodeArray = new Node[lineList.getLength()];
 
             long lStartTime = System.nanoTime();
             for (int i = 0; i < lineList.getLength(); i++)
             {
-                lineNode = lineList.item(i);
-                lineElement = (Element) lineNode;
+                lineElement = (Element) lineList.item(i);
 
                 if (lineElement.getTextContent().contains(fragment)) {
-                    System.out.println("The fragment has been found in the following sentence:");
-                    System.out.println("'" + lineElement.getTextContent() + "'");
+                    lineNodeArray[numberOfSentences] = lineList.item(i);
+                    numberOfSentences++;
                     isFound = true;
                 }
             }
@@ -66,8 +68,21 @@ public class Main {
                 System.out.println("Sorry, fragment not found.");
             System.out.println("Search performed in " + ((lEndTime - lStartTime)/1000000000.0) + " seconds");
             if (isFound) {
+                System.out.println("The fragment has been found in the following sentence(s):");
+                for (int i = 0; i < numberOfSentences; i++)
+                    System.out.println("'" + lineNodeArray[i].getTextContent() + "'");
                 System.out.println("Do you want to replace it? (Y/N)");
             }
+
+            //Input text to replace line
+            System.out.println("Enter number of line you want to replace");
+            int lineNumber = input.nextInt();
+            input.nextLine();
+            System.out.println("Insert new line");
+            String replacement = input.nextLine();
+            lineNodeArray[0].setTextContent(replacement);
+            System.out.println("The sentence has been replced as follows:\n" +
+                    lineNodeArray[0].getTextContent() +"\nDo you want to save changes? (Y/N)");
         }
         catch (ParserConfigurationException e) {
             e.printStackTrace();
