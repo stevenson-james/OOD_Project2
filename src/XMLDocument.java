@@ -66,6 +66,10 @@ public class XMLDocument {
         System.out.println (checkedName + " speaks " + count + " times ");
     }
 
+    public void findAndReplace(){
+        Node[] lineNodeArray = findLine();
+        replaceText(lineNodeArray);
+    }
     public Node[] findLine(){
         System.out.println("Insert fragment to be found:");
         String fragment = input.nextLine();
