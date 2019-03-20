@@ -36,8 +36,7 @@ public class Display extends Application {
     private Button noReplaceBt = new Button ("No");
     private int replaceNum = 1;
     private File outputFile = new File ("Shakespeare/hamlet.xml");
-    private Button chooseOutputBt = new Button ("Choose Output File");
-    private Text outputFileDisplay = new Text(60, 60, " Output file name: " + outputFile.getName());
+    private TextField outputFileTF = new TextField();
     private Button saveFileBt = new Button ("Save File");
     private Button yesSaveBt = new Button ("Yes");
     private Button noSaveBt = new Button ("No");
@@ -47,6 +46,9 @@ public class Display extends Application {
         pane.setPadding(new Insets(11, 12, 13, 14));
         pane.setHgap(5);
         pane.setVgap(5);
+
+        outputFileTF.setPromptText("Insert name of output file (Default: 'hamlet.xml)'");
+        outputFileTF.setPrefColumnCount(40);
 
         speakerTF.setPromptText("Insert name of speaker (Default: 'HAMLET')");
         speakerTF.setPrefColumnCount(25); //sets width of text field
@@ -60,7 +62,7 @@ public class Display extends Application {
         lineNumTF.setPromptText("Insert line number to replace (Default: '1')");
         lineNumTF.setPrefColumnCount(20);
 
-        pane.getChildren().addAll(openBt, fileDisplay, chooseOutputBt, outputFileDisplay, saveFileBt, personaBt, speakerTF,
+        pane.getChildren().addAll(openBt, fileDisplay, outputFileTF, saveFileBt, personaBt, speakerTF,
                 speakerBt, searchLineTF, searchLineBt, output);
 
         Scene scene = new Scene(pane, 500, 300);
@@ -70,7 +72,6 @@ public class Display extends Application {
 
 
         openBt.setOnAction(e -> chooseInputFile(primaryStage));
-        chooseOutputBt.setOnAction(e -> chooseOutputFile(primaryStage));
         personaBt.setOnAction(e -> findNumberOfPersona());
         speakerBt.setOnAction(e -> findNumberOfSpeaker());
         searchLineBt.setOnAction(e -> findLine());
@@ -89,10 +90,11 @@ public class Display extends Application {
         xmlDocument.setXMLDocument(file);
     }
 
-    public void chooseOutputFile(Stage primaryStage) {
+    /*public void chooseOutputFile(Stage primaryStage) {
         outputFile = fileChooser.showOpenDialog(primaryStage);
         outputFileDisplay.setText(" Output file name: " + outputFile.getName());
     }
+    */
 
     public void findNumberOfPersona(){
         output.setText("There are " + xmlDocument.findNumberOfPersona() + " personae in " + file.getName());
@@ -152,6 +154,8 @@ public class Display extends Application {
     }
 
     public void checkSaveFile(){
+        if (!outputFileTF.getText().equals(""))
+            outputFile = new File(outputFileTF.getText());
         if (file.getName().equals(outputFile.getName()))
         {
             output.setText("Would you like to overwrite file: " + file.getName() + " (Y/N)");
@@ -180,6 +184,7 @@ public class Display extends Application {
         } catch (TransformerException e) {
             e.printStackTrace();
             success = false;
+            output.setText("Incompatible file name");
         }
         if (success)
             output.setText("File saved successfully!");
