@@ -71,10 +71,4 @@ public class XMLDocument {
         SearchResult result = new SearchResult(lineNodeArray, (lEndTime - lStartTime) / 1000000000.0, numberOfSentences);
         return result;
     }
-
-    public void replaceLine(Node[] lineNodeArray, int lineNumber, String replacement) {
-        lineNodeArray[lineNumber - 1].setTextContent(replacement);
-        System.out.println("The sentence has been replaced as follows:\n" +
-                lineNodeArray[lineNumber - 1].getTextContent() + "\nDo you want to save changes? (Y/N)");
-    }
 }
