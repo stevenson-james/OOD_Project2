@@ -41,6 +41,7 @@ public class Display extends Application {
     private Button saveFileBt = new Button ("Save File");
     private Button yesSaveBt = new Button ("Yes");
     private Button noSaveBt = new Button ("No");
+    private String newLine = "";
 
     public void start(Stage primaryStage) throws Exception {
         pane.setPadding(new Insets(11, 12, 13, 14));
@@ -59,17 +60,8 @@ public class Display extends Application {
         lineNumTF.setPromptText("Insert line number to replace (Default: '1')");
         lineNumTF.setPrefColumnCount(20);
 
-        pane.getChildren().add(openBt);
-        pane.getChildren().add(fileDisplay);
-        pane.getChildren().add(chooseOutputBt);
-        pane.getChildren().add(outputFileDisplay);
-        pane.getChildren().add(saveFileBt);
-        pane.getChildren().add(personaBt);
-        pane.getChildren().add(speakerTF);
-        pane.getChildren().add(speakerBt);
-        pane.getChildren().add(searchLineTF);
-        pane.getChildren().add(searchLineBt);
-        pane.getChildren().add(output);
+        pane.getChildren().addAll(openBt, fileDisplay, chooseOutputBt, outputFileDisplay, saveFileBt, personaBt, speakerTF,
+                speakerBt, searchLineTF, searchLineBt, output);
 
         Scene scene = new Scene(pane, 500, 300);
         primaryStage.setTitle("MyJavaFX");
@@ -136,7 +128,8 @@ public class Display extends Application {
                 Integer.parseInt(lineNumTF.getText()) > 0)
             replaceNum = Integer.parseInt(lineNumTF.getText());
         String previousLine = searchResult.getLineNodeArray()[replaceNum - 1].getTextContent();
-        output.setText("'" + previousLine + "' will be replaced with: \n'" + replaceTF.getText() + "'\n" +
+        newLine = searchResult.getLineNodeArray()[replaceNum - 1].getTextContent().replace(searchLineTF.getText(), replaceTF.getText());
+        output.setText("'" + previousLine + "' will be replaced with: \n'" + newLine + "'\n" +
                 "Do you want to save the changes? (Y/N)");
         pane.getChildren().addAll(yesReplaceBt, noReplaceBt);
         pane.getChildren().removeAll(replaceTF, replaceBt, exitReplaceBt, lineNumTF);
@@ -148,24 +141,20 @@ public class Display extends Application {
     }
 
     public void yesReplaceLine(){
-        searchResult.getLineNodeArray()[replaceNum - 1].setTextContent(replaceTF.getText());
+        searchResult.getLineNodeArray()[replaceNum - 1].setTextContent(newLine);
         pane.getChildren().removeAll(yesReplaceBt, noReplaceBt);
         output.setText("");
     }
 
     public void noReplaceLine(){
         pane.getChildren().removeAll(yesReplaceBt, noReplaceBt);
-        pane.getChildren().addAll(replaceTF, replaceBt, exitReplaceBt, lineNumTF);
         findLine();
     }
 
-    //save file button
-    //if same, open yes no and output choice
-    //else saveFile
     public void checkSaveFile(){
         if (file.getName().equals(outputFile.getName()))
         {
-            output.setText("Would you like to overwrite file: " + file.getName());
+            output.setText("Would you like to overwrite file: " + file.getName() + " (Y/N)");
             pane.getChildren().addAll(yesSaveBt, noSaveBt);
         }
         else
