@@ -32,13 +32,15 @@ public class Display extends Application {
     private Button replaceBt = new Button("Replace Line");
     private TextField lineNumTF = new TextField();
     private Button exitReplaceBt = new Button ("Do Not Replace Line");
-    private Button yesBt = new Button ("Yes");
-    private Button noBt = new Button ("No");
+    private Button yesReplaceBt = new Button ("Yes");
+    private Button noReplaceBt = new Button ("No");
     private int replaceNum = 1;
     private File outputFile = new File ("Shakespeare/hamlet.xml");
     private Button chooseOutputBt = new Button ("Choose Output File");
     private Text outputFileDisplay = new Text(60, 60, " Output file name: " + outputFile.getName());
     private Button saveFileBt = new Button ("Save File");
+    private Button yesSaveBt = new Button ("Yes");
+    private Button noSaveBt = new Button ("No");
 
     public void start(Stage primaryStage) throws Exception {
         pane.setPadding(new Insets(11, 12, 13, 14));
@@ -82,9 +84,11 @@ public class Display extends Application {
         searchLineBt.setOnAction(e -> findLine());
         replaceBt.setOnAction(e -> replaceLine());
         exitReplaceBt.setOnAction(e -> exitReplace());
-        yesBt.setOnAction(e -> yesReplaceLine());
-        noBt.setOnAction(e -> noReplaceLine());
-        saveFileBt.setOnAction(e -> saveFile());
+        yesReplaceBt.setOnAction(e -> yesReplaceLine());
+        noReplaceBt.setOnAction(e -> noReplaceLine());
+        saveFileBt.setOnAction(e -> checkSaveFile());
+        yesSaveBt.setOnAction(e -> yesSaveFile());
+        noSaveBt.setOnAction(e -> noSaveFile());
     }
 
     public void chooseInputFile(Stage primaryStage){
@@ -128,13 +132,13 @@ public class Display extends Application {
     }
 
     public void replaceLine(){
-        //NEED TO GET FUNCTIONALITY WITH NO USER INPUT
-        if (Integer.parseInt(lineNumTF.getText()) <= searchResult.getNumberOfSentences() && Integer.parseInt(lineNumTF.getText()) > 0)
+        if (!lineNumTF.getText().equals("") && Integer.parseInt(lineNumTF.getText()) <= searchResult.getNumberOfSentences() &&
+                Integer.parseInt(lineNumTF.getText()) > 0)
             replaceNum = Integer.parseInt(lineNumTF.getText());
         String previousLine = searchResult.getLineNodeArray()[replaceNum - 1].getTextContent();
         output.setText("'" + previousLine + "' will be replaced with: \n'" + replaceTF.getText() + "'\n" +
                 "Do you want to save the changes? (Y/N)");
-        pane.getChildren().addAll(yesBt, noBt);
+        pane.getChildren().addAll(yesReplaceBt, noReplaceBt);
         pane.getChildren().removeAll(replaceTF, replaceBt, exitReplaceBt, lineNumTF);
     }
 
@@ -145,14 +149,36 @@ public class Display extends Application {
 
     public void yesReplaceLine(){
         searchResult.getLineNodeArray()[replaceNum - 1].setTextContent(replaceTF.getText());
-        pane.getChildren().removeAll(yesBt, noBt);
+        pane.getChildren().removeAll(yesReplaceBt, noReplaceBt);
         output.setText("");
     }
 
     public void noReplaceLine(){
-        pane.getChildren().removeAll(yesBt, noBt);
+        pane.getChildren().removeAll(yesReplaceBt, noReplaceBt);
         pane.getChildren().addAll(replaceTF, replaceBt, exitReplaceBt, lineNumTF);
         findLine();
+    }
+
+    //save file button
+    //if same, open yes no and output choice
+    //else saveFile
+    public void checkSaveFile(){
+        if (file.getName().equals(outputFile.getName()))
+        {
+            output.setText("Would you like to overwrite file: " + file.getName());
+            pane.getChildren().addAll(yesSaveBt, noSaveBt);
+        }
+        else
+            saveFile();
+    }
+    public void yesSaveFile(){
+        saveFile();
+        pane.getChildren().removeAll(yesSaveBt, noSaveBt);
+    }
+
+    public void noSaveFile(){
+        pane.getChildren().removeAll(yesSaveBt, noSaveBt);
+        output.setText("");
     }
 
     public void saveFile() {
