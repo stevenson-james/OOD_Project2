@@ -73,8 +73,6 @@ public class XMLDocument {
     }
 
     public void replaceLine(Node[] lineNodeArray, int lineNumber, String replacement) {
-        System.out.println("Enter number of line you want to replace");
-        System.out.println("Insert new line");
         lineNodeArray[lineNumber - 1].setTextContent(replacement);
         System.out.println("The sentence has been replaced as follows:\n" +
                 lineNodeArray[lineNumber - 1].getTextContent() + "\nDo you want to save changes? (Y/N)");
