@@ -22,8 +22,6 @@ import java.io.IOException;
 public class XMLDocument {
     Document document;
     Element root;
-	private String file;
-
 	
 	/**
 	 * Importing XML Doc
@@ -34,14 +32,12 @@ public class XMLDocument {
     }
     /**
      * Creates new XML document
-     * @param file input file name for XML document
      */
     public void setXMLDocument(File file) {
-    	this.file = "hamlet.xml";
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            document = builder.parse(new File(this.file));
+            document = builder.parse(file);
             root = document.getDocumentElement();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();

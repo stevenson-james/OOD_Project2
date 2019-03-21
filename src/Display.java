@@ -153,7 +153,10 @@ public class Display extends Application {
                 Integer.parseInt(lineNumTF.getText()) > 0)
             replaceNum = Integer.parseInt(lineNumTF.getText());
         String previousLine = searchResult.getLineNodeArray()[replaceNum - 1].getTextContent();
-        newLine = searchResult.getLineNodeArray()[replaceNum - 1].getTextContent().replace(searchLineTF.getText(), replaceTF.getText());
+        String fragmentText = searchLineTF.getText();
+        if (searchLineTF.getText().equals(""))
+            fragmentText = "To be, or not to be";
+            newLine = searchResult.getLineNodeArray()[replaceNum - 1].getTextContent().replace(fragmentText, replaceTF.getText());
         output.setText("'" + previousLine + "' will be replaced with: \n'" + newLine + "'\n" +
                 "Do you want to save the changes? (Y/N)");
         pane.getChildren().addAll(yesReplaceBt, noReplaceBt);
