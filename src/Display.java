@@ -13,6 +13,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 
+
+/**
+ * GUI program for XML Parsing
+ * @author James Stevenson and Matt Zech
+ *
+ */
 public class Display extends Application {
 
     private FlowPane pane = new FlowPane();
@@ -42,6 +48,10 @@ public class Display extends Application {
     private Button noSaveBt = new Button ("No");
     private String newLine = "";
 
+    /**
+     * Creates buttons and text fields on the stage and calls
+     * respective methods on action
+     */
     public void start(Stage primaryStage) throws Exception {
         pane.setPadding(new Insets(11, 12, 13, 14));
         pane.setHgap(5);
@@ -84,6 +94,10 @@ public class Display extends Application {
         noSaveBt.setOnAction(e -> noSaveFile());
     }
 
+    /**
+     * User chooses input file
+     * @param primaryStage
+     */
     public void chooseInputFile(Stage primaryStage){
         file = fileChooser.showOpenDialog(primaryStage);
         fileDisplay.setText(" Input file name: " + file.getName());
@@ -96,6 +110,9 @@ public class Display extends Application {
     }
     */
 
+    /**
+     * Finds the total number of speakers
+     */
     public void findNumberOfPersona(){
         output.setText("There are " + xmlDocument.findNumberOfPersona() + " personae in " + file.getName());
     }
@@ -110,6 +127,9 @@ public class Display extends Application {
         output.setText(speaker + " speaks " + count + " times");
     }
 
+    /**
+     * Finds how many lines a certain phrase is included in
+     */
     public void findLine() {
         searchResult = xmlDocument.findLine(searchLineTF.getText());
         if (searchResult.getNumberOfSentences() == 0)
@@ -125,6 +145,9 @@ public class Display extends Application {
         }
     }
 
+    /**
+     * Prompts the user to replace the line(s) with a specified phrase
+     */
     public void replaceLine(){
         if (!lineNumTF.getText().equals("") && Integer.parseInt(lineNumTF.getText()) <= searchResult.getNumberOfSentences() &&
                 Integer.parseInt(lineNumTF.getText()) > 0)
@@ -137,22 +160,35 @@ public class Display extends Application {
         pane.getChildren().removeAll(replaceTF, replaceBt, exitReplaceBt, lineNumTF);
     }
 
+    /**
+     * Exits the replacement section
+     */
     public void exitReplace(){
         pane.getChildren().removeAll(replaceTF, replaceBt, exitReplaceBt, lineNumTF);
         output.setText("");
     }
 
+    /**
+     * Runs if the user selects yes
+     */
     public void yesReplaceLine(){
         searchResult.getLineNodeArray()[replaceNum - 1].setTextContent(newLine);
         pane.getChildren().removeAll(yesReplaceBt, noReplaceBt);
         output.setText("");
     }
 
+    /**
+     * Removes the replacement section and does not run
+     */
     public void noReplaceLine(){
         pane.getChildren().removeAll(yesReplaceBt, noReplaceBt);
         findLine();
     }
 
+    /**
+     * Checks to see if an overwrite is necessary
+     * Then prompts the user to overwrite the file
+     */
     public void checkSaveFile(){
         if (!outputFileTF.getText().equals(""))
             outputFile = new File(outputFileTF.getText());
@@ -164,16 +200,25 @@ public class Display extends Application {
         else
             saveFile();
     }
+    /**
+     * If user wants to overwrite, run
+     */
     public void yesSaveFile(){
         saveFile();
         pane.getChildren().removeAll(yesSaveBt, noSaveBt);
     }
 
+    /**
+     * If user does not want to overwrite, break
+     */
     public void noSaveFile(){
         pane.getChildren().removeAll(yesSaveBt, noSaveBt);
         output.setText("");
     }
 
+    /**
+     * Operation for saving the file into the computer
+     */
     public void saveFile() {
         boolean success = true;
         try {
@@ -190,6 +235,10 @@ public class Display extends Application {
             output.setText("File saved successfully!");
     }
 
+    /**
+     * Launches the display
+     * @param args
+     */
     public static void main(String[] args) {
         Application.launch(args);
     }
