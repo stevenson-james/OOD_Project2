@@ -7,22 +7,41 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.File;
 import java.io.IOException;
 
+
+/**
+ * This class creates a new XML document of a
+ * Shakespeare play and parses it, asking for user input
+ * and rewriting it into a new file
+ * @author James Stevenson and Matt Zech
+ *
+ */
 public class XMLDocument {
     Document document;
     Element root;
+	private String file;
 
+	
+	/**
+	 * Importing XML Doc
+	 * @param file
+	 */
     XMLDocument(File file) {
         setXMLDocument(file);
     }
-
+    /**
+     * Creates new XML document
+     * @param file
+     */
     public void setXMLDocument(File file) {
+    	this.file = "hamlet.xml";
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            document = builder.parse(file);
+            document = builder.parse(new File(this.file));
             root = document.getDocumentElement();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -32,13 +51,22 @@ public class XMLDocument {
             e.printStackTrace();
         }
     }
+    /**
+     * Finds number of different characters in play
+     * @return integer representing speakers in the play
+     */
 
     public int findNumberOfPersona() {
         NodeList personaList = root.getElementsByTagName("PERSONA");
         int numPersona = personaList.getLength();
         return numPersona;
     }
-
+	/**
+	 * Finds how many times the user-specified speaker
+	 * talks during the play
+	 * @param checkedName automatically converts it to upper case
+	 * @return number of lines in the play
+	 */
     public int findNumberOfSpeaker(String checkedName) {
         int count = 0;
         NodeList speakerList = root.getElementsByTagName("SPEAKER");
@@ -50,7 +78,11 @@ public class XMLDocument {
         }
         return count;
     }
-
+    /**
+     * Searches the play for a user-specified word or phrase
+     * @param fragment used for what to search for
+     * @return list of lines where the phrase is spoken
+     */
     public SearchResult findLine(String fragment) {
         if (fragment.equals(""))
             fragment = "To be, or not to be";
@@ -72,3 +104,4 @@ public class XMLDocument {
         return result;
     }
 }
+
