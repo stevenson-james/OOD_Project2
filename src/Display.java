@@ -96,7 +96,7 @@ public class Display extends Application {
 
     /**
      * User chooses input file
-     * @param primaryStage
+     * @param primaryStage stage used for displaying GUI
      */
     public void chooseInputFile(Stage primaryStage){
         file = fileChooser.showOpenDialog(primaryStage);
@@ -237,7 +237,7 @@ public class Display extends Application {
 
     /**
      * Launches the display
-     * @param args
+     * @param args arguments
      */
     public static void main(String[] args) {
         Application.launch(args);

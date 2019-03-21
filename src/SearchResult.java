@@ -20,9 +20,9 @@ public class SearchResult {
     /**
      * Constructs SearchResult passing in
      * parameters to be set
-     * @param lineNodeArray
-     * @param timeToSearch
-     * @param numberOfSentences
+     * @param lineNodeArray node array of lines found
+     * @param timeToSearch time taken to search in seconds
+     * @param numberOfSentences number of sentences found in document
      */
     SearchResult(Node[] lineNodeArray, double timeToSearch, int numberOfSentences) {
         this.lineNodeArray = lineNodeArray;

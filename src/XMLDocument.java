@@ -27,14 +27,14 @@ public class XMLDocument {
 	
 	/**
 	 * Importing XML Doc
-	 * @param file
+	 * @param file input file name for XML document
 	 */
     XMLDocument(File file) {
         setXMLDocument(file);
     }
     /**
      * Creates new XML document
-     * @param file
+     * @param file input file name for XML document
      */
     public void setXMLDocument(File file) {
     	this.file = "hamlet.xml";
