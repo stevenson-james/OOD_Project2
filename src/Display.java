@@ -229,7 +229,7 @@ public class Display extends Application {
         } catch (TransformerException e) {
             e.printStackTrace();
             success = false;
-            output.setText("Incompatible file name");
+            output.setText("Incompatible filename");
         }
         if (success)
             output.setText("File saved successfully!");
